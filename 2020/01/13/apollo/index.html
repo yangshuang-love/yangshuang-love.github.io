@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>apollo 使用 VUE 示例 | Y.S</title><meta name="keywords" content="Node.js,Vue.js"><meta name="author" content="Y S"><meta name="copyright" content="Y S"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="简介Apollo 是 GraphQL 的一种实现，解决 RESTful API 的一些问题。 官网教程：https:&#x2F;&#x2F;www.apollographql.com&#x2F;docs&#x2F;tutorial&#x2F;introduction&#x2F; 前端库：npm install --save vue-apollo apollo-client 我们按照官网示例做一遍教程，构建一个预订 SpaceX 发射的小应用。主要包括：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apollo 使用 VUE 示例">
+<meta property="og:url" content="http://hukayun.com/2020/01/13/apollo/index.html">
+<meta property="og:site_name" content="Y.S">
+<meta property="og:description" content="简介Apollo 是 GraphQL 的一种实现，解决 RESTful API 的一些问题。 官网教程：https:&#x2F;&#x2F;www.apollographql.com&#x2F;docs&#x2F;tutorial&#x2F;introduction&#x2F; 前端库：npm install --save vue-apollo apollo-client 我们按照官网示例做一遍教程，构建一个预订 SpaceX 发射的小应用。主要包括：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-01-13T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-26T06:35:45.335Z">
+<meta property="article:author" content="Y S">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="Vue.js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://hukayun.com/2020/01/13/apollo/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-26 06:35:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Y.S" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">7</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">7</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E8%B5%B7%E6%AD%A5"><span class="toc-number">2.</span> <span class="toc-text">服务器端起步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">新建模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE"><span class="toc-number">2.2.</span> <span class="toc-text">连接数据</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Y.S</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">apollo 使用 VUE 示例</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-01-13T00:00:00.000Z" title="发表于 2020-01-13 00:00:00">2020-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-26T06:35:45.335Z" title="更新于 2020-10-26 06:35:45">2020-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Apollo 是 GraphQL 的一种实现，解决 RESTful API 的一些问题。</p>
+<p>官网教程：<a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/tutorial/introduction/">https://www.apollographql.com/docs/tutorial/introduction/</a></p>
+<p>前端库：<br><code>npm install --save vue-apollo apollo-client</code></p>
+<p>我们按照官网示例做一遍教程，构建一个预订 SpaceX 发射的小应用。主要包括：</p>
+<ul>
+<li>登录页</li>
+<li>即将发射清单</li>
+<li>发射细节</li>
+<li>用户资料页</li>
+<li>购物车</li>
+</ul>
+<p>其他参考链接<br><a target="_blank" rel="noopener" href="https://dev.to/alvarojsnish/graphql-mongodb-the-easy-way-ngc">https://dev.to/alvarojsnish/graphql-mongodb-the-easy-way-ngc</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52382639/connect-apollo-server-with-mongodb-mongoos/52462031">https://stackoverflow.com/questions/52382639/connect-apollo-server-with-mongodb-mongoos/52462031</a></p>
+<h2 id="服务器端起步"><a href="#服务器端起步" class="headerlink" title="服务器端起步"></a>服务器端起步</h2><p>下载教程代码：</p>
+<p><code>git clone https://github.com/apollographql/fullstack-tutorial.git</code></p>
+<p>起步使用 start 目录，完成教程的代码参考 final 目录。</p>
+<p>先编辑 server 目录，也就是服务器。</p>
+<p>新建模式之前，先设置 API 服务器。Apollo 服务器是一个连接数据的库。先安装依赖：</p>
+<p><code>cd start/server &amp;&amp; npm install</code></p>
+<p>其中核心的依赖是：<code>apollo-server</code> 和 <code>graphql</code> 这两个包。</p>
+<p>先修改入口 <code>src/index.js</code> 文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ApolloServer &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-server&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> typeDefs = <span class="built_in">require</span>(<span class="string">&quot;./schema&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> ApolloServer(&#123; typeDefs &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里导入了 ApolloServer 类，并用编写的模式新建服务器实例。下面我们编写模式。</p>
+<h3 id="新建模式"><a href="#新建模式" class="headerlink" title="新建模式"></a>新建模式</h3><p>可以把模式（schema）当做所有数据及关系的蓝图。模式还定义了我们可以通过查询获取哪些数据以及更新哪些数据。模式是强类型的。</p>
+<p>官方文档认为是模式是前端和后端团队进行协作的理想结合点，建议团队练习 Schema First Development。</p>
+<p>参照我们的目标，应用需要：</p>
+<ul>
+<li>获取所有即将到来的火箭发射</li>
+<li>通过其 ID 获取特定的发射</li>
+<li>登录用户</li>
+<li>预订发射（登录状态下）</li>
+<li>取消发射（登录状态下）</li>
+</ul>
+<p>基于这些要求去构建模式。修改 <code>src/schema.js</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; gql &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-server&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> typeDefs = gql<span class="string">`</span></span><br><span class="line"><span class="string">  # Your schema will go here</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = typeDefs;</span><br></pre></td></tr></table></figure>
+
+<p>导入 gql。并用示例的方式写入模式代码。</p>
+<p>语言使用的是 SDL 语言（GraphQL’s schema definition language）。看着有一点像 <code>TypeScript</code>。</p>
+<p>从查询类型 (Query type) 开始，查询类型主要是用来描述我们的数据，是模式的入口点。现在我们加入一些代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; gql &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-server&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> typeDefs = gql(<span class="string">`</span></span><br><span class="line"><span class="string">  type Query &#123;</span></span><br><span class="line"><span class="string">    launches: [Launch]!</span></span><br><span class="line"><span class="string">    launch(id: ID!): Launch</span></span><br><span class="line"><span class="string">    # Queries for the current user</span></span><br><span class="line"><span class="string">    me: User</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = typeDefs;</span><br></pre></td></tr></table></figure>
+
+<p>定义了非空数组 launches，定义了通过 id 查询单个 launch，还定义了 me 获取用户信息。这里我们使用 Launch 和 User 两个对象类型。我们下面来定义一下他们。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">type Launch &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  site: <span class="built_in">String</span></span><br><span class="line">  mission: Mission</span><br><span class="line">  rocket: Rocket</span><br><span class="line">  isBooked: <span class="built_in">Boolean</span>!</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Rocket &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  name: <span class="built_in">String</span></span><br><span class="line">  type: <span class="built_in">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type User &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  email: <span class="built_in">String</span>!</span><br><span class="line">  trips: [Launch]!</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Mission &#123;</span><br><span class="line">  name: <span class="built_in">String</span></span><br><span class="line">  missionPatch(size: PatchSize): <span class="built_in">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum PatchSize &#123;</span><br><span class="line">  SMALL</span><br><span class="line">  LARGE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>确实很像 TS，有很多基础类型如 ID, String, Boolean, Int 等，也可以使用自定义类型。</p>
+<p>missionPatch 这里也加入了参数，因为 GraphQL 非常灵活，可以在任何字段里包含参数。还可以定义枚举类型。</p>
+<p><a target="_blank" rel="noopener" href="https://devhints.io/graphql#schema">详细用法参考</a></p>
+<p>然后是 Mutation type 变动类型。主要是修改数据的入口点。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type Mutation &#123;</span><br><span class="line">  # if false, booking trips failed -- check errors</span><br><span class="line">  bookTrips(launchIds: [ID]!): TripUpdateResponse!</span><br><span class="line"></span><br><span class="line">  # if false, cancellation failed -- check errors</span><br><span class="line">  cancelTrip(launchId: ID!): TripUpdateResponse!</span><br><span class="line"></span><br><span class="line">  login(email: String): String # login token</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type TripUpdateResponse &#123;</span><br><span class="line">  success: <span class="built_in">Boolean</span>!</span><br><span class="line">  message: <span class="built_in">String</span></span><br><span class="line">  launches: [Launch]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>bookTrips 和 cancelTrip 这两个变动都会接受一个参数，并返回一个更新响应 TripUpdateResponse。在响应里不光包含了状态和信息，还包括了更新后的数据。这是一种好习惯，可以让客户端自动缓存更新。</p>
+<p>现在设置服务器监听，修改 index.js：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ApolloServer &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-server&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> typeDefs = <span class="built_in">require</span>(<span class="string">&quot;./schema&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> ApolloServer(&#123; typeDefs &#125;);</span><br><span class="line"></span><br><span class="line">server.listen().then(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`🚀 Server ready at <span class="subst">$&#123;url&#125;</span>`</span>);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`GraphQL Playground run at <span class="subst">$&#123;url&#125;</span>graphql`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>运行 npm start，服务器默认端口 4000。</p>
+<p>默认 Apollo 开发环境会开启 <a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/">GraphQL Playground</a>。这是一个交互式浏览器 IDE，可以用来浏览和测试。生产环境自动关闭。</p>
+<p>点击右侧的 schema 按钮和 docs 按钮，可以直接浏览自动生成文档和模式代码。</p>
+<h3 id="连接数据"><a href="#连接数据" class="headerlink" title="连接数据"></a>连接数据</h3><p>现在我们可以通过建立的模式来连接数据源了。我们的数据源可以是任意服务，比如业务逻辑，REST APIs, 数据库, 或者 gRPC 服务。</p>
+<p>下面我们会试试连接 REST API 和 SQL 数据库。新建<code>src/datasources/launch.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; RESTDataSource &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-datasource-rest&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LaunchAPI</span> <span class="keyword">extends</span> <span class="title">RESTDataSource</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>();</span><br><span class="line">    <span class="built_in">this</span>.baseURL = <span class="string">&quot;https://api.spacexdata.com/v2/&quot;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = LaunchAPI;</span><br></pre></td></tr></table></figure>
+
+<p>设定了 api 基本地址。RESTDataSource 还设置了内存缓存，无需额外设置即可缓存来自 REST 资源的响应。我们称此为部分查询缓存。此缓存的优点在于，您可以重用 REST API 公开的现有缓存逻辑。</p>
+<p>然后写数据拉取方法，首先添加一个获取所有发射：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="title">getAllLaunches</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="built_in">this</span>.get(<span class="string">&#x27;launches&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Array</span>.isArray(response)</span><br><span class="line">    ? response.map(<span class="function"><span class="params">launch</span> =&gt;</span> <span class="built_in">this</span>.launchReducer(launch))</span><br><span class="line">    : [];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>get 这句代码就是发送了 get 请求到<a target="_blank" rel="noopener" href="https://api.spacexdata.com/v2/launches%E3%80%82%E8%8E%B7%E5%8F%96%E7%9A%84%E6%95%B0%E6%8D%AE%E6%95%B0%E7%BB%84%E5%8F%88%E7%BB%8F%E8%BF%87%E4%BA%86%E4%B8%80%E4%B8%AAmap%E9%81%8D%E5%8E%86%E6%96%B9%E6%B3%95%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E5%AF%B9%E6%AF%8F%E4%B8%AA%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E4%BA%86%E6%93%8D%E4%BD%9C%EF%BC%8C%E6%88%91%E4%BB%AC%E6%8E%A5%E7%9D%80%E5%86%99%E8%BF%99%E4%B8%AA%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%EF%BC%9A">https://api.spacexdata.com/v2/launches。获取的数据数组又经过了一个map遍历方法，也就是对每个数据进行了操作，我们接着写这个方法的实现：</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">launchReducer</span>(<span class="params">launch</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    id: launch.flight_number || <span class="number">0</span>,</span><br><span class="line">    cursor: <span class="string">`<span class="subst">$&#123;launch.launch_date_unix&#125;</span>`</span>,</span><br><span class="line">    site: launch.launch_site &amp;&amp; launch.launch_site.site_name,</span><br><span class="line">    mission: &#123;</span><br><span class="line">      name: launch.mission_name,</span><br><span class="line">      missionPatchSmall: launch.links.mission_patch_small,</span><br><span class="line">      missionPatchLarge: launch.links.mission_patch,</span><br><span class="line">    &#125;,</span><br><span class="line">    rocket: &#123;</span><br><span class="line">      id: launch.rocket.rocket_id,</span><br><span class="line">      name: launch.rocket.rocket_name,</span><br><span class="line">      type: launch.rocket.rocket_type,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法类似一个重映射，将 api 里的字段映射到了我们定义的 schema 中的字段，同时还做了数据的精简和组织。</p>
+<p>然后再增加两个通过 id 或 id 列表来获取特定发射数据的方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="title">getLaunchById</span>(<span class="params">&#123; launchId &#125;</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="built_in">this</span>.get(<span class="string">&#x27;launches&#x27;</span>, &#123; <span class="attr">flight_number</span>: launchId &#125;);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span>.launchReducer(response[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">getLaunchesByIds</span>(<span class="params">&#123; launchIds &#125;</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all(</span><br><span class="line">    launchIds.map(<span class="function"><span class="params">launchId</span> =&gt;</span> <span class="built_in">this</span>.getLaunchById(&#123; launchId &#125;)),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 id 获取数据，如果是数组，则分别调用单个 id 获取的方法。现在 rest 方式已经成功啦。</p>
+<p>user.js 在示例中已经提供了，可以先读一下。数据结构已经准备好了。</p>
+<p>然后开始添加到 server，修改 index.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; ApolloServer &#125; = <span class="built_in">require</span>(<span class="string">&quot;apollo-server&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> typeDefs = <span class="built_in">require</span>(<span class="string">&quot;./schema&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; createStore &#125; = <span class="built_in">require</span>(<span class="string">&quot;./utils&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> LaunchAPI = <span class="built_in">require</span>(<span class="string">&quot;./datasources/launch&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> UserAPI = <span class="built_in">require</span>(<span class="string">&quot;./datasources/user&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> ApolloServer(&#123;</span><br><span class="line">  typeDefs,</span><br><span class="line">  dataSources: <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    launchAPI: <span class="keyword">new</span> LaunchAPI(),</span><br><span class="line">    userAPI: <span class="keyword">new</span> UserAPI(&#123; store &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen().then(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`🚀 Server ready at <span class="subst">$&#123;url&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Y S</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://hukayun.com/2020/01/13/apollo/">http://hukayun.com/2020/01/13/apollo/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://hukayun.com" target="_blank">Y.S</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Node-js/">Node.js</a><a class="post-meta__tags" href="/tags/Vue-js/">Vue.js</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2019/07/18/base64%E4%B8%8EarrayBuffer%E4%BA%92%E7%9B%B8%E8%BD%AC%E6%8D%A2/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">base64与arrayBuffer互相转换</div></div></a></div></nav></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By Y S</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script></div></body></html>
